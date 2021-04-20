@@ -39,16 +39,15 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         edtPhone = findViewById(R.id.edtPhone);
         edtPassword = findViewById(R.id.edtPassword);
+
         txtLogin = findViewById(R.id.txtLogin);
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Caroline.otf");
         txtLogin.setTypeface(face);
 
-
-
         btnLogin = findViewById(R.id.btnLogin);
-
         // init Firebase
         database = FirebaseDatabase.getInstance();
         table_user = database.getReference("User");
@@ -57,56 +56,60 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (Common.isConnectedToInternet(getBaseContext())) {
-
-                    final ProgressDialog mDialog = new ProgressDialog(Login.this);
-                    mDialog.setMessage("Please Wait...");
-                    mDialog.show();
-
-                    table_user.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            //checking if user exists
-                            if (snapshot.child(edtPhone.getText().toString()).exists()) {
-
-                                //Get User information
-                                mDialog.dismiss();
-                                User user = snapshot.child(edtPhone.getText().toString()).getValue(User.class);
-                                user.setPhone(edtPhone.getText().toString());//get phone number
-                                if (user.getPassword().equals(edtPassword.getText().toString())) {
-                                    Intent home = new Intent(Login.this, Home.class);
-                                    Common.currentUser = user;
-                                    startActivity(home);
-                                    finish();
-                                    table_user.removeEventListener(this);
-                                } else {
-                                    Toast.makeText(Login.this, "Wrong Password or Username...", Toast.LENGTH_SHORT).show();
-
-                                }
-                            } else {
-                                mDialog.dismiss();
-                                Toast.makeText(Login.this, "User does not exist", Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-                else {
-
-                    // TO DO: convert to snack bar ...
-                    Toast.makeText(Login.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+               SignInUser(edtPhone.getText().toString(), edtPassword.getText().toString());
             }
 
         });
 
 
+    }
+
+    private void SignInUser(String toString, String toString1) {
+        if (Common.isConnectedToInternet(getBaseContext())) {
+
+            final ProgressDialog mDialog = new ProgressDialog(Login.this);
+            mDialog.setMessage("Please Wait...");
+            mDialog.show();
+
+            table_user.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    //checking if user exists
+                    if (snapshot.child(edtPhone.getText().toString()).exists()) {
+                        //Get User information
+                        mDialog.dismiss();
+                        User user = snapshot.child(edtPhone.getText().toString()).getValue(User.class);
+                        user.setPhone(edtPhone.getText().toString());//get phone number
+
+                        if (user.getPassword().equals(edtPassword.getText().toString())) {
+                            Intent home = new Intent(Login.this, Home.class);
+                            Common.currentUser = user;
+                            startActivity(home);
+                            finish();
+                            table_user.removeEventListener(this);
+                        } else {
+                            Toast.makeText(Login.this, "Wrong Password or Username...", Toast.LENGTH_SHORT).show();
+
+                        }
+                    } else {
+                        mDialog.dismiss();
+                        Toast.makeText(Login.this, "User does not exist", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+        else  {
+
+            // TO DO: convert to snack bar ...
+            Toast.makeText(Login.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
 }

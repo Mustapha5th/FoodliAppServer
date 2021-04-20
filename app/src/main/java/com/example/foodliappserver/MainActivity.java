@@ -35,13 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
         
         btnLogin = findViewById(R.id.btnLogin);
-
         txtSlogan = findViewById(R.id.txtSlogan);
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Caroline.otf");
         txtSlogan.setTypeface(face);
-
-        // init paper
-        Paper.init(this);
 
 
 
