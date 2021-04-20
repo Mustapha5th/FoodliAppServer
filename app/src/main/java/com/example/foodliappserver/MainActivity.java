@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
         btnLogin = findViewById(R.id.btnLogin);
         txtSlogan = findViewById(R.id.txtSlogan);
         Typeface face = Typeface.createFromAsset(getAssets(), "fonts/Caroline.otf");
@@ -50,69 +49,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // check remember
-        String user = Paper.book().read(Common.USER_KEY);
-        String password = Paper.book().read(Common.PWD_KEY);
-
-        if (user != null && password != null){
-            if (!user.isEmpty() && !password.isEmpty()){
-                login(user,password);
-            }
-        }
 
 
     }
 
-    private void login(String phone, String password) {
-
-        // init Firebase
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference table_user = database.getReference("User");
-
-        if (Common.isConnectedToInternet(getBaseContext())) {
-            // save user & password
-            final ProgressDialog mDialog = new ProgressDialog(MainActivity.this);
-            mDialog.setMessage("Please Wait...");
-            mDialog.show();
-
-            table_user.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    //checking if user exists
-                    if (snapshot.child(phone).exists()) {
-
-                        //Get User information
-                        mDialog.dismiss();
-                        User user = snapshot.child(phone).getValue(User.class);
-                        user.setPhone(phone);//get phone number
-                        if (user.getPassword().equals(password)) {
-                            Intent home = new Intent(MainActivity.this, Home.class);
-
-                            Common.currentUser = user;
-                            startActivity(home);
-                            finish();
-                        } else {
-                            Toast.makeText(MainActivity.this, "Wrong Password or Username...", Toast.LENGTH_SHORT).show();
-
-                        }
-                    } else {
-                        mDialog.dismiss();
-                        Toast.makeText(MainActivity.this, "User does not exist", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-        else {
-
-            // TO DO: convert to snack bar ...
-            Toast.makeText(MainActivity.this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
-            return;
-        }
-    }
 }

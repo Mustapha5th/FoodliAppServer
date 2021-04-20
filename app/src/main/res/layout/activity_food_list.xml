@@ -30,12 +30,14 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbtnAddFood"
+        app:backgroundTint="@color/white"
+        app:elevation="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="60dp"
         android:src="@drawable/ic_baseline_add"
-        android:layout_alignRight="@id/recycler_food"
+        android:layout_alignEnd="@id/recycler_food"
         android:layout_alignBottom="@id/recycler_food"/>
 
 </RelativeLayout>
