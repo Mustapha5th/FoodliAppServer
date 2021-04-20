@@ -19,8 +19,8 @@
     <fragment
         android:id="@+id/navigation_send_message"
         android:name="com.example.foodliappserver.Screens.ui.SendMessageFragment"
-        android:label="@string/cart"
-        tools:layout="@layout/fragment_cart" />
+        android:label="@string/message"
+        tools:layout="@layout/fragment_send_message" />
 
 
 </navigation>

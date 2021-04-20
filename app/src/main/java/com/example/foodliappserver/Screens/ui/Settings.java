@@ -6,7 +6,7 @@ import android.preference.PreferenceFragment;
 
 import androidx.annotation.Nullable;
 
-import com.example.foodliapp.R;
+import com.example.foodliappserver.R;
 
 public class Settings extends PreferenceActivity {
 

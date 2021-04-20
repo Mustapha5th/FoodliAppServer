@@ -42,7 +42,7 @@ final int SETTINGS_ACTIVITY =1;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_menu, R.id.navigation_cart, R.id.navigation_order_status,R.id.navigation_favorite,R.id.navigation_profile)
+                R.id.navigation_menu, R.id.navigation_order_status,R.id.navigation_send_message)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

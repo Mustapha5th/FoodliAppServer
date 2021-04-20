@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.foodliapp.Interface.ItemClickListener;
-import com.example.foodliapp.Model.Category;
-import com.example.foodliapp.R;
-import com.example.foodliapp.ViewHolder.MenuViewHolder;
+import com.example.foodliappserver.Interface.ItemClickListener;
+import com.example.foodliappserver.Model.Category;
+import com.example.foodliappserver.R;
+import com.example.foodliappserver.ViewHolder.MenuViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
