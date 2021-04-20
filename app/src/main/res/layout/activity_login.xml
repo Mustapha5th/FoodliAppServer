@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Screens.ui.Authentication.Login">
+
+    <TextView
+        android:id="@+id/txtLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:text="Login"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="50sp"
+        android:textStyle="bold|italic" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical">
+
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edtPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/phone_number"
+            android:inputType="phone"
+            android:text="08024324446"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            app:met_baseColor="@color/colorPrimaryDark"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="11"
+            app:met_primaryColor="@color/colorPrimaryDark"
+            app:met_singleLineEllipsis="true" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:text="1234"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHint="@color/colorPrimaryDark"
+            android:textSize="24sp"
+            app:met_baseColor="@color/colorPrimaryDark"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="11"
+            app:met_primaryColor="@color/colorPrimaryDark"
+            app:met_singleLineEllipsis="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="140dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="200dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_buttons"
+            android:shadowRadius="4"
+            android:text="@string/login"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</RelativeLayout>

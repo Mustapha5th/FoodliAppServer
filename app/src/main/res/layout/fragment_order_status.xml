@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Screens.ui.OrderStatusFragment">
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listOrders"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent">
+            </androidx.recyclerview.widget.RecyclerView>
+</RelativeLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
