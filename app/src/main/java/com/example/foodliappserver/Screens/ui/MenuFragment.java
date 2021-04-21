@@ -1,5 +1,6 @@
 package com.example.foodliappserver.Screens.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -33,9 +35,11 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rengwuxian.materialedittext.MaterialEditText;
@@ -45,6 +49,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class MenuFragment extends Fragment {
+
     // initialize variables
 
     FloatingActionButton fbtnAddMenu;
@@ -133,7 +138,9 @@ public class MenuFragment extends Fragment {
 
         //Load menu
         recycler_menu = root.findViewById(R.id.recycler_menu);
-        recycler_menu.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        manager = new LinearLayoutManager(getContext());
+        recycler_menu.setLayoutManager(manager);
+        recycler_menu.setHasFixedSize(true);
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(recycler_menu.getContext(),
                 R.anim.layout_fall_down);
         recycler_menu.setLayoutAnimation(controller);
@@ -146,8 +153,6 @@ public class MenuFragment extends Fragment {
                 showDialog();
             }
         });
-
-
 
 
 
@@ -189,6 +194,12 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                // create new category
+                if(newCategory != null){
+                    category.push().setValue(newCategory);
+                    Snackbar.make(getActivity().findViewById(android.R.id.content), "New Category"+newCategory.getName()+" was added", Snackbar.LENGTH_SHORT).show();
+                    loadMenu();
+                }
 
             }
         });
@@ -229,6 +240,13 @@ public class MenuFragment extends Fragment {
                     mDialog.dismiss();
                     Toast.makeText(requireContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                    mDialog.setMessage("Uploaded " +progress+"%");
+
+                }
             });
         }
     }
@@ -241,9 +259,9 @@ public class MenuFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == Common.PICK_IMAGE_REQUEST && data != null && data.getData() != null ){
+        if(requestCode == Common.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null ){
             saveUri = data.getData();
-            btnSelect.setText("Image Selected");
+            btnSelect.setText("Selected");
         }
     }
 
@@ -255,7 +273,6 @@ public class MenuFragment extends Fragment {
     }
 
     private void loadMenu() {
-
         adapter.startListening();
         adapter.notifyDataSetChanged(); // Refresh data if there is any change
         recycler_menu.setAdapter(adapter);

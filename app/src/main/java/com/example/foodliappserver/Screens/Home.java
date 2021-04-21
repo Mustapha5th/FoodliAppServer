@@ -94,7 +94,7 @@ final int SETTINGS_ACTIVITY =1;
     public void setTheme(){
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         if (SP.getString("color_choices", "Light Mode").equals("Light Mode")){
-            setTheme(R.style.Theme_FoodliApp);
+            setTheme(R.style.Theme_FoodliAppServer);
         }
         else{
             setTheme(R.style.Base_AppTheme_Dark);

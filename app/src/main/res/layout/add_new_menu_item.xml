@@ -9,12 +9,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/edtName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Name"
+        android:hint="Menu Name"
         android:inputType="text"
         android:text=""
         android:textColor="@color/colorPrimaryDark"

@@ -30,7 +30,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fbtnAddFood"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:elevation="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
