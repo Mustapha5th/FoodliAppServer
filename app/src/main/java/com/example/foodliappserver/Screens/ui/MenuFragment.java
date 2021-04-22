@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -161,6 +162,92 @@ public class MenuFragment extends Fragment {
 
 }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == Common.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null ){
+            saveUri = data.getData();
+            btnSelect.setText("Selected");
+        }
+    }
+
+    @Override
+
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
+
+    private void loadMenu() {
+        adapter.startListening();
+        adapter.notifyDataSetChanged(); // Refresh data if there is any change
+        recycler_menu.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
+        //Animation
+        recycler_menu.getAdapter().notifyDataSetChanged();
+        recycler_menu.scheduleLayoutAnimation();
+    }
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+
+        if (item.getTitle().equals(Common.UPDATE)){
+            showUpdateDialog(adapter.getRef(item.getOrder()).getKey(), adapter.getItem(item.getOrder()));
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void showUpdateDialog(String key, Category item) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("Update Category");
+        alertDialog.setMessage("Please fill full information");
+        LayoutInflater inflater = this.getLayoutInflater();
+        View add_menu_item = inflater.inflate(R.layout.add_new_menu_item, null);
+
+        edtName = add_menu_item.findViewById(R.id.edtName);
+        btnSelect = add_menu_item.findViewById(R.id.btnSelect);
+        btnUpload = add_menu_item.findViewById(R.id.btnUpload);
+
+        // set default values
+        edtName.setText(item.getName());
+        btnSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                chooseImage(); // allows user to select image from gallery
+            }
+        });
+
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               changeImage(item);
+
+            }
+        });
+        alertDialog.setView(add_menu_item);
+        alertDialog.setIcon(R.drawable.ic_baseline_shopping_cart);
+        // set button
+        alertDialog.setPositiveButton(Html.fromHtml("<font color='#DE8405'>YES</font>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+               item.setName(edtName.getText().toString());
+               category.child(key).setValue(item);
+
+
+            }
+        });
+        alertDialog.setNegativeButton(Html.fromHtml("<font color='#DE8405'>No</font>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+
+
+    }
+
     private void showDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("Add new Category");
@@ -228,8 +315,8 @@ public class MenuFragment extends Fragment {
                     imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                       // set value for nee category
-                       newCategory = new Category(edtName.getText().toString(), uri.toString());
+                            // set value for nee category
+                            newCategory = new Category(edtName.getText().toString(), uri.toString());
 
                         }
                     });
@@ -252,34 +339,45 @@ public class MenuFragment extends Fragment {
     }
 
     private void chooseImage() {
-       Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent.createChooser(intent,"Select Picture"), Common.PICK_IMAGE_REQUEST);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == Common.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null ){
-            saveUri = data.getData();
-            btnSelect.setText("Selected");
+    private void changeImage(Category item) {
+        if (saveUri != null){
+            ProgressDialog mDialog = new ProgressDialog(getContext());
+            mDialog.setMessage("Uplaoding...");
+            mDialog.show();
+            String imageName = UUID.randomUUID().toString();
+            StorageReference imageFolder = storageReference.child("images/"+imageName);
+            imageFolder.putFile(saveUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    mDialog.dismiss();
+                    Toast.makeText(requireContext(), "Uploaded successfully", Toast.LENGTH_SHORT).show();
+                    imageFolder.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            // set value for nee category
+                          item.setImage(uri.toString());
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    mDialog.dismiss();
+                    Toast.makeText(requireContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                    mDialog.setMessage("Uploaded " +progress+"%");
+
+                }
+            });
         }
-    }
-
-    @Override
-
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
-
-    private void loadMenu() {
-        adapter.startListening();
-        adapter.notifyDataSetChanged(); // Refresh data if there is any change
-        recycler_menu.setAdapter(adapter);
-        swipeRefreshLayout.setRefreshing(false);
-        //Animation
-        recycler_menu.getAdapter().notifyDataSetChanged();
-        recycler_menu.scheduleLayoutAnimation();
     }
 
 
