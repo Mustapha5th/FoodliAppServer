@@ -1,14 +1,16 @@
 package com.example.foodliappserver.ViewHolder;
 
+import android.view.ContextMenu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodliappserver.Common.Common;
 import com.example.foodliappserver.Interface.ItemClickListener;
 import com.example.foodliappserver.R;
-public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener{
 
     public TextView food_name, food_price;
     public ImageView food_image, favIcon, addToCartIcon;
@@ -36,4 +38,12 @@ public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         itemClickListener.onClick(v, getAdapterPosition(), false);
 
     }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.setHeaderTitle("Select Action");
+        menu.add(0,0,getAdapterPosition(), Common.UPDATE);
+        menu.add(0,0,getAdapterPosition(), Common.DELETE);
+
+    }
+
 }

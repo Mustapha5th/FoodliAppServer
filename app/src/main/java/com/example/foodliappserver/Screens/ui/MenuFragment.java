@@ -192,8 +192,15 @@ public class MenuFragment extends Fragment {
 
         if (item.getTitle().equals(Common.UPDATE)){
             showUpdateDialog(adapter.getRef(item.getOrder()).getKey(), adapter.getItem(item.getOrder()));
+        }else if (item.getTitle().equals(Common.DELETE)){
+            deleteCategory(adapter.getRef(item.getOrder()).getKey());
+            Toast.makeText(getContext(), "Menu item deleted", Toast.LENGTH_SHORT).show();
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void deleteCategory(String key) {
+        category.child(key).removeValue();
     }
 
     private void showUpdateDialog(String key, Category item) {

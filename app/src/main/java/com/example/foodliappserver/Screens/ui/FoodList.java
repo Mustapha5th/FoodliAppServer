@@ -1,6 +1,7 @@
 package com.example.foodliappserver.Screens.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,6 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.squareup.picasso.Picasso;
 
@@ -45,6 +48,11 @@ public class FoodList extends AppCompatActivity {
     DatabaseReference foodList;
     FirebaseRecyclerAdapter<Food, FoodViewHolder> adapter;
     String categoryId = "";
+
+    Uri saveUri;
+    FirebaseStorage storage;
+    StorageReference storageReference;
+
 
     SwipeRefreshLayout swipeRefreshLayout;
 
