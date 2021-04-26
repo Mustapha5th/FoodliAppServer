@@ -161,7 +161,6 @@ public class MenuFragment extends Fragment {
 
 
 }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -170,22 +169,10 @@ public class MenuFragment extends Fragment {
             btnSelect.setText("Selected");
         }
     }
-
     @Override
-
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-    }
-
-    private void loadMenu() {
-        adapter.startListening();
-        adapter.notifyDataSetChanged(); // Refresh data if there is any change
-        recycler_menu.setAdapter(adapter);
-        swipeRefreshLayout.setRefreshing(false);
-        //Animation
-        recycler_menu.getAdapter().notifyDataSetChanged();
-        recycler_menu.scheduleLayoutAnimation();
     }
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
@@ -199,10 +186,18 @@ public class MenuFragment extends Fragment {
         return super.onContextItemSelected(item);
     }
 
+    private void loadMenu() {
+        adapter.startListening();
+        adapter.notifyDataSetChanged(); // Refresh data if there is any change
+        recycler_menu.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
+        //Animation
+        recycler_menu.getAdapter().notifyDataSetChanged();
+        recycler_menu.scheduleLayoutAnimation();
+    }
     private void deleteCategory(String key) {
         category.child(key).removeValue();
     }
-
     private void showUpdateDialog(String key, Category item) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("Update Category");
@@ -241,6 +236,7 @@ public class MenuFragment extends Fragment {
                item.setName(edtName.getText().toString());
                category.child(key).setValue(item);
 
+                Snackbar.make(getActivity().findViewById(android.R.id.content), "category "+item.getName()+" was edited", Snackbar.LENGTH_SHORT).show();
 
             }
         });
@@ -254,7 +250,6 @@ public class MenuFragment extends Fragment {
 
 
     }
-
     private void showDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
         alertDialog.setTitle("Add new Category");
@@ -306,7 +301,6 @@ public class MenuFragment extends Fragment {
         alertDialog.show();
 
     }
-
     private void uploadImage() {
         if (saveUri != null){
             ProgressDialog mDialog = new ProgressDialog(getContext());
@@ -344,12 +338,10 @@ public class MenuFragment extends Fragment {
             });
         }
     }
-
     private void chooseImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent.createChooser(intent,"Select Picture"), Common.PICK_IMAGE_REQUEST);
     }
-
     private void changeImage(Category item) {
         if (saveUri != null){
             ProgressDialog mDialog = new ProgressDialog(getContext());

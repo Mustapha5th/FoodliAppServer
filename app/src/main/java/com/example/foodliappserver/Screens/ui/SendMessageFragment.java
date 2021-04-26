@@ -19,7 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.foodliappserver.Common.Common;
+import com.example.foodliappserver.Model.MyResponse;
+import com.example.foodliappserver.Model.Notification;
+import com.example.foodliappserver.Model.Sender;
 import com.example.foodliappserver.R;
+import com.example.foodliappserver.Remote.APIService;
 import com.example.foodliappserver.Screens.ui.Authentication.Login;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,12 +38,14 @@ import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SendMessageFragment extends Fragment {
-    Button btnLogout;
-    CheckBox chkNotification;
-
-    TextView txtFullName, txtPhone, txtChangePassword,txtEditProfile,txtItemBought,txtFavItems;
+    Button btnSend;
+    MaterialEditText edtTitle, edtMessage;
+    APIService mService;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -47,6 +53,35 @@ public class SendMessageFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_send_message, container, false);
 
+        mService = Common.getFCMService();
+        edtMessage = root.findViewById(R.id.edtMessage);
+        edtTitle = root.findViewById(R.id.edtTitle);
+
+        btnSend = root.findViewById(R.id.btnSend);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // create message
+                Notification notification = new Notification(edtTitle.getText().toString(), edtMessage.getText().toString());
+                Sender toTopic = new Sender();
+                toTopic.to = new StringBuilder("/topics/").append(Common.topicName).toString();
+                toTopic.notification = notification;
+                mService.sendNotification(toTopic).enqueue(new Callback<MyResponse>() {
+                    @Override
+                    public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+                        if (response.isSuccessful()){
+                            Toast.makeText(getContext(), "Message sent", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MyResponse> call, Throwable t) {
+                        Toast.makeText(getContext(), ""+t.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
 
         return root;
     }

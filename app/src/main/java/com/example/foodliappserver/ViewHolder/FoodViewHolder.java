@@ -13,7 +13,7 @@ import com.example.foodliappserver.R;
 public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener{
 
     public TextView food_name, food_price;
-    public ImageView food_image, favIcon, addToCartIcon;
+    public ImageView food_image;
     private ItemClickListener itemClickListener;
 
     public FoodViewHolder(View itemView) {
@@ -22,10 +22,8 @@ public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         food_name = itemView.findViewById(R.id.food_name);
         food_price = itemView.findViewById(R.id.food_price);
         food_image = itemView.findViewById(R.id.food_image);
-        favIcon = itemView.findViewById(R.id.favIcon);
-        addToCartIcon = itemView.findViewById(R.id.addToCartIcon);
 
-
+        itemView.setOnCreateContextMenuListener(this);
         itemView.setOnClickListener(this);
     }
 
@@ -42,7 +40,7 @@ public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         menu.setHeaderTitle("Select Action");
         menu.add(0,0,getAdapterPosition(), Common.UPDATE);
-        menu.add(0,0,getAdapterPosition(), Common.DELETE);
+        menu.add(0,1,getAdapterPosition(), Common.DELETE);
 
     }
 

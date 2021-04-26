@@ -67,6 +67,7 @@ final int SETTINGS_ACTIVITY =1;
                 startActivityForResult(new Intent(this, Settings.class), SETTINGS_ACTIVITY);
                  break;
             case R.id.menu_refresh:
+                recreate();
                 Toast.makeText(this, "Set refresh", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.menu_exit:

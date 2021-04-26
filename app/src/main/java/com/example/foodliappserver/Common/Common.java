@@ -34,7 +34,7 @@ public class Common {
         if (status.equals("0"))
             return "Placed";
         else if (status.equals("1"))
-            return "On my way";
+            return "On it's way";
         else
             return "delivered";
 

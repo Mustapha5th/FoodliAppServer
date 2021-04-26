@@ -1,9 +1,15 @@
 package com.example.foodliappserver.Screens.ui;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,14 +19,18 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.foodliappserver.Common.Common;
 import com.example.foodliappserver.Interface.ItemClickListener;
+import com.example.foodliappserver.Model.Category;
+import com.example.foodliappserver.Model.Order;
 import com.example.foodliappserver.Model.Request;
 import com.example.foodliappserver.R;
 import com.example.foodliappserver.ViewHolder.OrderViewHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 public class OrderStatusFragment extends Fragment {
     public RecyclerView recyclerView;
@@ -31,6 +41,7 @@ public class OrderStatusFragment extends Fragment {
     FirebaseDatabase database;
     DatabaseReference requests;
 
+    MaterialSpinner spinner;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
          View root = inflater.inflate(R.layout.fragment_order_status, container, false);
@@ -53,22 +64,33 @@ public class OrderStatusFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadOrders(Common.currentUser.getPhone());
+                loadOrders();
             }
         });
 
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                loadOrders(Common.currentUser.getPhone());
+                loadOrders();
             }
         });
 
         return root;
     }
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
 
-    private void loadOrders(String phone) {
-        Query orderQuery =  requests.orderByChild("phone").equalTo(phone);
+        if (item.getTitle().equals(Common.UPDATE)){
+            showUpdateDialog(adapter.getRef(item.getOrder()).getKey(), adapter.getItem(item.getOrder()));
+        }else if (item.getTitle().equals(Common.DELETE)){
+            deleteOrder(adapter.getRef(item.getOrder()).getKey());
+            Toast.makeText(getContext(), "Menu item deleted", Toast.LENGTH_SHORT).show();
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void loadOrders() {
+        Query orderQuery =  requests.orderByKey();
         FirebaseRecyclerOptions<Request> options = new FirebaseRecyclerOptions.Builder<Request>()
                 .setQuery(orderQuery,Request.class).build();
         adapter = new FirebaseRecyclerAdapter<Request, OrderViewHolder>(options) {
@@ -81,6 +103,7 @@ public class OrderStatusFragment extends Fragment {
                 orderViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
+
 
                     }
                 });
@@ -106,4 +129,43 @@ public class OrderStatusFragment extends Fragment {
         super.onStop();
         adapter.stopListening();
     }
+    private void deleteOrder(String key) {
+        requests.child(key).removeValue();
+    }
+    private void showUpdateDialog(String key, Request item) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+        alertDialog.setTitle("Update Order");
+        alertDialog.setMessage("Please choose order status");
+        LayoutInflater inflater = this.getLayoutInflater();
+        View update_order_layout = inflater.inflate(R.layout.update_order_layout, null);
+
+        spinner = update_order_layout.findViewById(R.id.statusSpinner);
+        spinner.setItems("Placed","On it's way", "Delivered");
+
+        alertDialog.setView(update_order_layout);
+        alertDialog.setIcon(R.drawable.ic_baseline_access_time);
+        final String localKeys = key;
+        // set button
+        alertDialog.setPositiveButton(Html.fromHtml("<font color='#DE8405'>YES</font>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                item.setStatus(String.valueOf(spinner.getSelectedIndex()));
+                requests.child(localKeys).setValue(item);
+
+//                Snackbar.make(getActivity().findViewById(android.R.id.content), "category "+item.getName()+" was edited", Snackbar.LENGTH_SHORT).show();
+
+            }
+        });
+        alertDialog.setNegativeButton(Html.fromHtml("<font color='#DE8405'>No</font>"), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+
+
+    }
+
 }

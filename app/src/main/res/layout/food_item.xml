@@ -46,22 +46,6 @@
                android:text="₦1000"
                android:textSize="18sp"
                android:textStyle="bold" />
-           <ImageView
-               android:id="@+id/addToCartIcon"
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_weight="1"
-               android:src="@drawable/ic_baseline_add_shopping_cart"
-               app:tint="@color/white"/>
-
-           <ImageView
-               android:id="@+id/favIcon"
-               android:layout_width="0dp"
-               android:layout_height="wrap_content"
-               android:layout_weight="1"
-               android:src="@drawable/ic_baseline_favorite_border"
-               app:tint="@color/white"/>
-
        </LinearLayout>
 
     </LinearLayout>
