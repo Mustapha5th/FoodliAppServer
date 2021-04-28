@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.ParseException;
 
+import com.example.foodliappserver.Model.Request;
 import com.example.foodliappserver.Model.User;
 import com.example.foodliappserver.Remote.APIService;
 import com.example.foodliappserver.Remote.RetrofitClient;
@@ -20,6 +21,7 @@ public class Common {
     public static final String DELETE = "Delete";
     public static final String USER_KEY = "User";
     public static final String PWD_KEY = "Password";
+    public static Request currentRequest;
     public  static  String  topicName = "News";
     public  static  String  PHONE_TEXT = "userPhone";
     public static User currentUser;

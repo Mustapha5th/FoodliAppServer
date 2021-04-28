@@ -2,6 +2,7 @@ package com.example.foodliappserver.Screens.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -103,7 +104,10 @@ public class OrderStatusFragment extends Fragment {
                 orderViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void onClick(View view, int position, boolean isLongClick) {
-
+                        Intent orderDetail = new Intent(getContext(), OrderDetail.class);
+                        Common.currentRequest = request;
+                        orderDetail.putExtra("OrderId",adapter.getRef(position).getKey());
+                        startActivity(orderDetail);
 
                     }
                 });
