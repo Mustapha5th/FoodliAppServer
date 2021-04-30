@@ -78,17 +78,6 @@ public class OrderStatusFragment extends Fragment {
 
         return root;
     }
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-
-        if (item.getTitle().equals(Common.UPDATE)){
-            showUpdateDialog(adapter.getRef(item.getOrder()).getKey(), adapter.getItem(item.getOrder()));
-        }else if (item.getTitle().equals(Common.DELETE)){
-            deleteOrder(adapter.getRef(item.getOrder()).getKey());
-            Toast.makeText(getContext(), "Menu item deleted", Toast.LENGTH_SHORT).show();
-        }
-        return super.onContextItemSelected(item);
-    }
 
     private void loadOrders() {
         Query orderQuery =  requests.orderByKey();
@@ -101,17 +90,31 @@ public class OrderStatusFragment extends Fragment {
                 orderViewHolder.txtOrderStatus.setText(Common.convertCodeToStatus(request.getStatus()));
                 orderViewHolder.txtOrderAddress.setText(request.getAddress());
                 orderViewHolder.txtOrderPhone.setText(request.getPhone());
-                orderViewHolder.setItemClickListener(new ItemClickListener() {
+                orderViewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        Intent orderDetail = new Intent(getContext(), OrderDetail.class);
-                        Common.currentRequest = request;
-                        orderDetail.putExtra("OrderId",adapter.getRef(position).getKey());
-                        startActivity(orderDetail);
+                    public void onClick(View v) {
+                        showUpdateDialog(adapter.getRef(i).getKey(), adapter.getItem(i));
 
                     }
                 });
-            }
+                orderViewHolder.btnDetail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent orderDetail = new Intent(getContext(), OrderDetail.class);
+                        Common.currentRequest = request;
+                        orderDetail.putExtra("OrderId",adapter.getRef(i).getKey());
+                        startActivity(orderDetail);
+                    }
+                });
+                orderViewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        deleteOrder(adapter.getRef(i).getKey());
+                        Toast.makeText(getContext(), "Order item deleted", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+              }
 
 
             @NonNull
@@ -135,6 +138,7 @@ public class OrderStatusFragment extends Fragment {
     }
     private void deleteOrder(String key) {
         requests.child(key).removeValue();
+        adapter.notifyDataSetChanged();
     }
     private void showUpdateDialog(String key, Request item) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
@@ -156,7 +160,7 @@ public class OrderStatusFragment extends Fragment {
                 dialog.dismiss();
                 item.setStatus(String.valueOf(spinner.getSelectedIndex()));
                 requests.child(localKeys).setValue(item);
-
+                adapter.notifyDataSetChanged();
 //                Snackbar.make(getActivity().findViewById(android.R.id.content), "category "+item.getName()+" was edited", Snackbar.LENGTH_SHORT).show();
 
             }

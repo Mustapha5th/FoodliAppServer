@@ -21,6 +21,7 @@ public class OrderDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
+
         order_id = findViewById(R.id.order_id);
         order_phone = findViewById(R.id.order_phone);
         order_address = findViewById(R.id.order_address);
@@ -37,7 +38,7 @@ public class OrderDetail extends AppCompatActivity {
         order_id.setText(order_id_value);
         order_phone.setText(Common.currentRequest.getPhone());
         order_address.setText(Common.currentRequest.getAddress());
-        order_total.setText(Common.currentRequest.getTotal());
+        order_total.setText(String.format("₦%s", Common.currentRequest.getTotal()));
         order_comment.setText(Common.currentRequest.getComment());
 
 

@@ -9,63 +9,92 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal"
-        >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="9"
-            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
             >
-            <TextView
-                android:id="@+id/order_id"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:id="@+id/order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical|start"
+                    android:text="#111111"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/order_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical|start"
+                    android:text="Status"
+                    android:textAllCaps="true"
+                    android:textStyle="italic"/>
+                <TextView
+                    android:id="@+id/order_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical|start"
+                    android:text="1234567890"
+                    android:textAllCaps="true"
+                    android:textStyle="italic"/>
+                <TextView
+                    android:id="@+id/order_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical|start"
+                    android:text="Address"
+                    android:textAllCaps="true"
+                    android:textStyle="italic"/>
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical|start"
-                android:text="#111111"
-                android:textAllCaps="true"
-                android:textStyle="bold"/>
-            <TextView
-                android:id="@+id/order_status"
+                android:text="Edit"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:textColor="@color/colorPrimaryDark"/>
+            <Button
+                android:id="@+id/btnRemove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical|start"
-                android:text="Status"
-                android:textAllCaps="true"
-                android:textStyle="italic"/>
-            <TextView
-                android:id="@+id/order_phone"
+                android:text="Remove"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:textColor="@color/colorPrimaryDark"/>
+            <Button
+                android:id="@+id/btnDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical|start"
-                android:text="1234567890"
-                android:textAllCaps="true"
-                android:textStyle="italic"/>
-            <TextView
-                android:id="@+id/order_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical|start"
-                android:text="Address"
-                android:textAllCaps="true"
-                android:textStyle="italic"/>
-            <TextView
-                android:id="@+id/order_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:gravity="center_vertical|start"
-                android:text="Comment"
-                android:textAllCaps="true"
-                android:textStyle="italic"/>
+                android:text="Detail"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:textColor="@color/colorPrimaryDark"/>
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
