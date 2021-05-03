@@ -54,7 +54,7 @@ final int SETTINGS_ACTIVITY =1;
     private void updateToken(String token) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference tokens = database.getReference("Tokens");
-        Token data = new Token(token,false); // false because this token send from client app
+        Token data = new Token(token,true); // true because this token send from client app
         tokens.child(Common.currentUser.getPhone()).setValue(data);
 
     }
