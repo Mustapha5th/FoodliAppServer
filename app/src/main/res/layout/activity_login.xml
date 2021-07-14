@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/root_layout"
     android:layout_height="match_parent"
     tools:context=".Screens.ui.Authentication.Login">
 
@@ -22,8 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_margin="20dp"
         android:orientation="vertical">
 
 
@@ -61,20 +61,12 @@
             app:met_primaryColor="@color/colorPrimaryDark"
             app:met_singleLineEllipsis="true" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="50dp"/>
-
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="200dp"
-            android:layout_height="0dp"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="200dp"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
+            android:layout_margin="20dp"
             android:background="@drawable/rounded_buttons"
             android:shadowRadius="4"
             android:text="@string/login"

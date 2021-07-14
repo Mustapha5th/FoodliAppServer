@@ -109,8 +109,25 @@ public class OrderStatusFragment extends Fragment {
                 orderViewHolder.btnRemove.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        deleteOrder(adapter.getRef(i).getKey());
-                        Toast.makeText(getContext(), "Order item deleted", Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Remove Order");
+                        builder.setMessage("This order is going to be deleted, are you sure you want to delete this order?");
+                        builder.setPositiveButton(Html.fromHtml("<font color= '#DE8405'>Yes</font>"), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteOrder(adapter.getRef(i).getKey());
+                                Toast.makeText(getContext(), "Order item deleted", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                        builder.setNegativeButton(Html.fromHtml("<font color= '#DE8405'>No</font>"), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        // show dialog
+                        builder.show();
 
                     }
                 });
@@ -148,7 +165,7 @@ public class OrderStatusFragment extends Fragment {
         View update_order_layout = inflater.inflate(R.layout.update_order_layout, null);
 
         spinner = update_order_layout.findViewById(R.id.statusSpinner);
-        spinner.setItems("Placed","On it's way", "Delivered");
+        spinner.setItems("Placed","Processing","Processed","On it's way", "Delivered");
 
         alertDialog.setView(update_order_layout);
         alertDialog.setIcon(R.drawable.ic_baseline_access_time);

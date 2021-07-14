@@ -61,6 +61,10 @@ public class SendMessageFragment extends Fragment {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (edtTitle.getText().toString().isEmpty()||edtMessage.getText().toString().isEmpty()){
+                    Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
+
+                }else {
                 // create message
                 Notification notification = new Notification(edtTitle.getText().toString(), edtMessage.getText().toString());
                 Sender toTopic = new Sender();
@@ -80,6 +84,7 @@ public class SendMessageFragment extends Fragment {
 
                     }
                 });
+            }
             }
         });
 

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.foodliappserver.Common.Common;
 import com.example.foodliappserver.Model.User;
 import com.example.foodliappserver.R;
 import com.example.foodliappserver.Screens.Home;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,13 +35,17 @@ public class Login extends AppCompatActivity {
     MaterialEditText edtPhone, edtPassword;
     TextView txtLogin;
     Button btnLogin;
+    RelativeLayout rootLayout;
     FirebaseDatabase database;
     DatabaseReference table_user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        if (!Common.isConnectedToInternet(getBaseContext())) {
+            Snackbar snackbar = Snackbar.make(rootLayout,"Please check your internet connection", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
         edtPhone = findViewById(R.id.edtPhone);
         edtPassword = findViewById(R.id.edtPassword);
 

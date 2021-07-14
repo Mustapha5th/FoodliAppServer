@@ -8,6 +8,7 @@
     app:cardElevation="5dp">
 
    <com.jaredrummler.materialspinner.MaterialSpinner
+       android:textColor="@color/black"
        android:id="@+id/statusSpinner"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"/>
