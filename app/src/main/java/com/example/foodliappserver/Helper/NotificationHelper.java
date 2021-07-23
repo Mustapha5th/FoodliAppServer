@@ -16,7 +16,7 @@ import com.example.foodliappserver.R;
 public class NotificationHelper extends ContextWrapper {
 
     public static final String FOODLI_CHANNEL_ID = "com.example.foodliapp";
-    public static final String FOODLI_CHANNEL_NAME = "FoodliApp";
+    public static final String FOODLI_CHANNEL_NAME = "FoodliAppServer";
     private NotificationManager manager;
 
     public NotificationHelper(Context base) {

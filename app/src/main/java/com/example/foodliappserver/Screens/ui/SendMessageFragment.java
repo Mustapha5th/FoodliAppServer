@@ -74,6 +74,8 @@ public class SendMessageFragment extends Fragment {
                     @Override
                     public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                         if (response.isSuccessful()){
+                            edtTitle.setText("");
+                            edtMessage.setText("");
                             Toast.makeText(getContext(), "Message sent", Toast.LENGTH_SHORT).show();
                         }
                     }
