@@ -16,6 +16,7 @@
         android:theme="@style/Theme.FoodliAppServer"
         tools:replace="android:theme">
         <activity android:name=".Screens.ui.OrderDetail" />
+        <activity android:name=".Screens.ui.Settings" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
         <activity
